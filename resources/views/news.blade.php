@@ -8,6 +8,6 @@
     <title>Welcome User</title>
 </head>
 <body>
-    <h1>Здесь могла быть ваша <strike>реклама</strike> новость</h1>
+    <h1>Здесь могла быть ваша <strike>реклама</strike> новость </h1>
 </body>
 </html>

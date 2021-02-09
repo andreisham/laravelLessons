@@ -8,6 +8,6 @@
     <title>Welcome User</title>
 </head>
 <body>
-    <h1>О нас...</h1>
+    <h1>О нас... </h1>
 </body>
 </html>
