@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,18 +17,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::get('/', [IndexController::class, 'index'])
+        ->name('admin');
+    Route::resource('news', AdminNewsController::class);
 });
 
-Route::get('/welcomeUser',function () {
-    return view('welcomeUser');
+
+/**
+ * Группировка роутов для упрощения написания url и name
+ */
+Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
+    Route::get('/category', [NewsController::class, 'index'])
+        ->name('index');;
+    Route::get('/category/{category_id}', [NewsController::class, 'showCategory'])
+        ->name('category');
+    Route::get('/category/posts/{id}', [NewsController::class, 'show'])
+        ->where('id', '\d+')
+        ->name('show');
 });
 
-Route::get('/info',function () {
-    return view('info');
-});
 
-Route::get('/news',function () {
-    return view('news');
-});
+Route::get('/', [WelcomeController::class, 'index'])
+        ->name('welcome');
+
+Route::get('/about', [AboutUsController::class, 'index'])
+    ->name('about');
