@@ -4,8 +4,8 @@
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Список новостей</h1> &nbsp;
-            <strong><a href="{{ route('admin.news.create') }}">Добавить новость</a></strong>
+            <h1 class="h3 mb-0 text-gray-800">Список источников</h1> &nbsp;
+            <strong><a href="{{ route('admin.sources.create') }}">Добавить источник</a></strong>
         </div>
 
         <!-- Content Row -->
@@ -14,18 +14,18 @@
                 <thead>
                 <tr>
                     <th>#ID</th>
-                    <th>Заголовок</th>
-                    <th>Категория</th>
+                    <th>Название</th>
+                    <th>Адрес</th>
                     <th>Дата добавления</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($newsList as $news)
+                @forelse($sources as $source)
                     <tr>
-                        <td>{{ $news->id }}</td>
-                        <td>{{ $news->title }}</td>
-                        <td>{{ $news->category }}</td>
-                        <td>{{ $news->created_at }}</td>
+                        <td>{{ $source->id }}</td>
+                        <td>{{ $source->title }}</td>
+                        <td>{{ $source->url }}</td>
+                        <td>{{ $source->created_at }}</td>
                     </tr>
                 @empty
                     <tr>
