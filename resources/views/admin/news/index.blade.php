@@ -15,8 +15,9 @@
                 <tr>
                     <th>#ID</th>
                     <th>Заголовок</th>
-                    <th>Категория</th>
+                    <th>Описание</th>
                     <th>Дата добавления</th>
+                    <th>Управление</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -24,8 +25,9 @@
                     <tr>
                         <td>{{ $news->id }}</td>
                         <td>{{ $news->title }}</td>
-                        <td>{{ $news->category }}</td>
+                        <td>{{ $news->description }}</td>
                         <td>{{ $news->created_at }}</td>
+                        <td><a href="{{ route('admin.news.show', ['news' => $news->id]) }}">Просмотр</a>&nbsp;<a href="">Редактировать</a>&nbsp;<a href="">Удалить</a></td>
                     </tr>
                 @empty
                     <tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Source;
 use Illuminate\Http\Request;
 
 class SourceController extends Controller
@@ -14,7 +15,8 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $sources = [];
+        $objSources = new Source();
+        $sources = $objSources->getSources();
         return view('admin.news.sources.index', ['sources' => $sources]);
     }
 
@@ -37,20 +39,18 @@ class SourceController extends Controller
     public function store(Request $request)
     {
         $data = $request->input();
-        $data = json_encode($data);
-        file_put_contents('testForm.txt', $data, FILE_APPEND);
         dd($request->input());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Source $source)
     {
-        //
+        return view('admin.news.sources.show', ['source' => $source]);
     }
 
     /**
