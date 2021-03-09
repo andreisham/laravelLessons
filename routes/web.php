@@ -48,3 +48,4 @@ Route::get('/', [WelcomeController::class, 'index'])
 
 Route::get('/about', [AboutUsController::class, 'index'])
     ->name('about');
+

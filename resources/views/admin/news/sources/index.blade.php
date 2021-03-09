@@ -17,6 +17,7 @@
                     <th>Название</th>
                     <th>Адрес</th>
                     <th>Дата добавления</th>
+                    <th>Управление</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@
                         <td>{{ $source->title }}</td>
                         <td>{{ $source->url }}</td>
                         <td>{{ $source->created_at }}</td>
+                        <td><a href="{{ route('admin.sources.show', ['source' => $source->id]) }}">Просмотр</a>&nbsp;<a href="">Редактировать</a>&nbsp;<a href="">Удалить</a></td>
                     </tr>
                 @empty
                     <tr>
