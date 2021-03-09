@@ -15,9 +15,12 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $objSources = new Source();
-        $sources = $objSources->getSources();
-        return view('admin.news.sources.index', ['sources' => $sources]);
+        $sources = Source::select('*')
+            ->paginate(5);
+
+        return view('admin.news.sources.index', [
+            'sources' => $sources
+        ]);
     }
 
     /**
@@ -27,7 +30,7 @@ class SourceController extends Controller
      */
     public function create()
     {
-        return view('admin.news.sources.add');
+        return view('admin.news.sources.create');
     }
 
     /**
@@ -38,8 +41,14 @@ class SourceController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->input();
-        dd($request->input());
+        $data = $request->only(['title', 'url']);
+
+        $create = Source::create($data);
+        if ($create) {
+            return redirect()->route('admin.sources.index')
+                ->with('success', 'Источник добавлен');
+        }
+        return back()->withInput()->with('errors', 'Не удалось добавить источник');
     }
 
     /**
@@ -56,24 +65,31 @@ class SourceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Source $source
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Source $source)
     {
-        //
+        return view('admin.news.sources.edit', ['source' => $source]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Source $source)
     {
-        //
+        $data = $request->only(['title', 'url']);
+
+        $save = $source->fill($data)->save();
+        if ($save) {
+            return redirect()->route('admin.sources.index')
+                ->with('success', 'Источник обновлен');
+        }
+        return back()->withInput()->with('errors', 'Не удалось обновить источник');
     }
 
     /**

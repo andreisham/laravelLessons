@@ -8,6 +8,9 @@
             <strong><a href="{{ route('admin.news.create') }}">Добавить новость</a></strong>
         </div>
 
+        @if(session()->has('success'))
+            <div class="alert alert-success">{{ session()->get('success') }}</div>
+        @endif
         <!-- Content Row -->
         <div class="row">
             <table class="table table-bordered">
@@ -24,10 +27,14 @@
                 @forelse($newsList as $news)
                     <tr>
                         <td>{{ $news->id }}</td>
-                        <td>{{ $news->title }}</td>
+                        <td>{{ $news->title }} (Количество категорий: {{ $news->categories->count() }})</td>
                         <td>{{ $news->description }}</td>
                         <td>{{ $news->created_at }}</td>
-                        <td><a href="{{ route('admin.news.show', ['news' => $news->id]) }}">Просмотр</a>&nbsp;<a href="">Редактировать</a>&nbsp;<a href="">Удалить</a></td>
+                        <td>
+                            <a href="{{ route('admin.news.show', ['news' => $news]) }}">Просмотр</a>&nbsp;
+                            <a href="{{ route('admin.news.edit', ['news' => $news]) }}">Редактировать</a>&nbsp;
+                            <a href="">Удалить</a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -38,6 +45,8 @@
                 @endforelse
                 </tbody>
             </table>
+{{--            пагинация--}}
+            {{ $newsList->links() }}
         </div>
     </div>
 

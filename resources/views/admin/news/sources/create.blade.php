@@ -20,10 +20,6 @@
                     <label for="url">Адрес источника (url)</label>
                     <input type="text" class="form-control" placeholder="http://..." name="url">
                 </div>
-                <div class="form-group">
-                    <label for="description">Описание</label>
-                    <textarea class="form-control"  name="description"></textarea>
-                </div>
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </form>
         </div>

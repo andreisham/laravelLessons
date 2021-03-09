@@ -8,6 +8,9 @@
             <strong><a href="{{ route('admin.categories.create') }}">Добавить категорию</a></strong>
         </div>
 
+        @if(session()->has('success'))
+            <div class="alert alert-success">{{ session()->get('success') }}</div>
+        @endif
         <!-- Content Row -->
         <div class="row">
             <table class="table table-bordered">
@@ -24,10 +27,14 @@
                     @forelse($categories as $category)
                         <tr>
                             <td>{{ $category->id }}</td>
-                            <td>{{ $category->title }}</td>
+                            <td>{{ $category->title }} (Количество новостей: {{ $category->news->count() }})</td>
                             <td>{{ $category->slug }}</td>
                             <td>{{ $category->created_at }}</td>
-                            <td><a href="{{ route('admin.categories.show', ['category' => $category->id]) }}">Просмотр</a>&nbsp;<a href="">Редактировать</a>&nbsp;<a href="">Удалить</a></td>
+                            <td>
+                                <a href="{{ route('admin.categories.show', ['category' => $category]) }}">Просмотр</a>&nbsp;
+                                <a href="{{ route('admin.categories.edit', ['category' => $category]) }}">Редактировать</a>&nbsp;
+                                <a href="">Удалить</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
@@ -38,6 +45,8 @@
                     @endforelse
                 </tbody>
             </table>
+{{--            пагинация--}}
+            {{ $categories->links() }}
         </div>
     </div>
 

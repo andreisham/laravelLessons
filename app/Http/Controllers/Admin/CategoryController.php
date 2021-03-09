@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -15,9 +16,16 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $objCategory = new Category();
-        $categories = $objCategory->getCategories();
-        return view('admin.news.categories.index', ['categories' => $categories]);
+//        $categories = Category::with('newsTmp')->get();
+//        dd($categories);
+        $categories = Category::select('*')
+            ->with('news')
+            ->paginate(5);
+
+
+        return view('admin.news.categories.index', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -27,7 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.news.categories.add');
+        return view('admin.news.categories.create');
     }
 
     /**
@@ -38,7 +46,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->input('title'));
+        $data = $request->only(['title', 'description']);
+        $data['slug'] = Str::slug($data['title']);
+
+        $create = Category::create($data);
+        if ($create) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись добавлена');
+        }
+        return back()->withInput()->with('errors', 'Не удалось добавить запись');
     }
 
     /**
@@ -60,19 +76,27 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-
+        return view('admin.news.categories.edit', ['category' => $category]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->only(['title', 'description']);
+        $data['slug'] = Str::slug($data['title']);
+
+        $save = $category->fill($data)->save();
+        if ($save) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись обновлена');
+        }
+        return back()->withInput()->with('errors', 'Не удалось обновить запись');
     }
 
     /**
