@@ -16,10 +16,34 @@
                 <div class="form-group">
                     <label for="title">Наименование новости</label>
                     <input type="text" class="form-control" placeholder="title" name="title" value="{{ $news->title }}">
+                    @if($errors->has('title'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('title') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <textarea class="form-control"  name="description">{{ $news->description }}</textarea>
+                    @if($errors->has('description'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('description') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label for="status">Статус новости</label>
+                    {{--                    не изменяется статус в БД  --}}
+                    <select class="form-control" name="status" id="status">
+                        <option>{{ $news->status }}</option>
+                        <option>draft</option>
+                        <option>published</option>
+                        <option>blocked</option>
+                    </select>
                 </div>
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </form>

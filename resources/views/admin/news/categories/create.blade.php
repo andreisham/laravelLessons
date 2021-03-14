@@ -14,11 +14,25 @@
                 @csrf
                 <div class="form-group">
                     <label for="title">Наименование категории</label>
-                    <input type="text" class="form-control" placeholder="title" name="title">
+                    <input type="text" class="form-control" placeholder="Заголовок" name="title">
+                    @if($errors->has('title'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('title') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <textarea class="form-control"  name="description"></textarea>
+                    @if($errors->has('description'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('description') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </form>
