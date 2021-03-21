@@ -15,10 +15,24 @@
                 <div class="form-group">
                     <label for="title">Название источника</label>
                     <input type="text" class="form-control" placeholder="title" name="title">
+                    @if($errors->has('title'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('title') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <div class="form-group">
                     <label for="url">Адрес источника (url)</label>
                     <input type="text" class="form-control" placeholder="http://..." name="url">
+                    @if($errors->has('url'))
+                        <div class="alert alert-danger">
+                            @foreach($errors->get('url') as $error)
+                                <p style="margin-bottom: 0;">{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </form>

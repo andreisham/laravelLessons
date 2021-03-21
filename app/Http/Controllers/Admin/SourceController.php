@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SourceCreateRequest;
+use App\Http\Requests\SourceEditRequest;
 use App\Models\Source;
 use Illuminate\Http\Request;
 
@@ -36,12 +38,12 @@ class SourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param SourceCreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SourceCreateRequest $request)
     {
-        $data = $request->only(['title', 'url']);
+        $data = $request->validated();
 
         $create = Source::create($data);
         if ($create) {
@@ -76,13 +78,13 @@ class SourceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param SourceEditRequest $request
      * @param Source $source
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Source $source)
+    public function update(SourceEditRequest $request, Source $source)
     {
-        $data = $request->only(['title', 'url']);
+        $data = $request->validated();
 
         $save = $source->fill($data)->save();
         if ($save) {
