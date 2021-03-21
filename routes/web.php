@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\SourceController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 /*
@@ -48,4 +49,7 @@ Route::get('/', [WelcomeController::class, 'index'])
 
 Route::get('/about', [AboutUsController::class, 'index'])
     ->name('about');
+
+Route::get('/example/{category}', fn(Category $category) => $category);
+
 

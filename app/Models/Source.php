@@ -9,13 +9,13 @@ class Source extends Model
 {
     use HasFactory;
 
-    public function getSources() {
-        return \DB::table('sources')
-            ->get(); // тоже самое что select * from table
-    }
+    protected $table = 'sources';
+    protected $primaryKey = 'id';
 
-    public function getSource(int $id) {
-        return \DB::table('sources')
-            ->find($id);
-    }
+    protected $fillable = [
+        'title',
+        'url',
+    ];
+    protected $guarded = ['id'];
+
 }

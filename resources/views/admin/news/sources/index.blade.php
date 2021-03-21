@@ -8,6 +8,9 @@
             <strong><a href="{{ route('admin.sources.create') }}">Добавить источник</a></strong>
         </div>
 
+        @if(session()->has('success'))
+            <div class="alert alert-success">{{ session()->get('success') }}</div>
+        @endif
         <!-- Content Row -->
         <div class="row">
             <table class="table table-bordered">
@@ -27,7 +30,11 @@
                         <td>{{ $source->title }}</td>
                         <td>{{ $source->url }}</td>
                         <td>{{ $source->created_at }}</td>
-                        <td><a href="{{ route('admin.sources.show', ['source' => $source->id]) }}">Просмотр</a>&nbsp;<a href="">Редактировать</a>&nbsp;<a href="">Удалить</a></td>
+                        <td>
+                            <a href="{{ route('admin.sources.show', ['source' => $source]) }}">Просмотр</a>&nbsp;
+                            <a href="{{ route('admin.sources.edit', ['source' => $source]) }}">Редактировать</a>&nbsp;
+                            <a href="">Удалить</a>
+                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -38,6 +45,8 @@
                 @endforelse
                 </tbody>
             </table>
+            {{--            пагинация--}}
+            {{ $sources->links() }}
         </div>
     </div>
 

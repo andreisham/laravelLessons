@@ -21,10 +21,10 @@ class SourceSeeder extends Seeder
     {
         $faker = Factory::create('ru_RU');
         $data = [];
-        for ($i = 0; $i > 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'title' => $faker->sentence(mt_rand(3,10)),
-                'url' => $faker->sentence(mt_rand(3,10)),
+                'url' => $faker->url,
                 'created_at' => now(),
                 'updated_at' => now()
             ];
