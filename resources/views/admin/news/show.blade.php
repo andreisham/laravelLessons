@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-    <h2>{{ $news->title }}</h2>
-    <p>{{ $news->description }}</p>
+    <h2>{{ $user->name }}</h2>
+    <p>{{ $user->email }}</p>
+    <p>Администратор: {{ $user->is_admin }}</p>
 @endsection

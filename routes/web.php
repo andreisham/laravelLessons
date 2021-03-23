@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\SourceController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,19 +21,25 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 |
 */
 
-
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
-    Route::get('/', [IndexController::class, 'index'])
-        ->name('admin');
-    Route::resource('news', AdminNewsController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('sources', SourceController::class);
-});
-
+Route::get('/', [WelcomeController::class, 'index'])
+    ->name('welcome');
 
 /**
  * Группировка роутов для упрощения написания url и name
  */
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/account', AccountController::class)->name('account');
+    Route::group(['middleware' => 'admin'], function () {
+        Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+            Route::get('/', [IndexController::class, 'index'])
+                ->name('admin');
+            Route::resource('news', AdminNewsController::class);
+            Route::resource('categories', CategoryController::class);
+            Route::resource('sources', SourceController::class);
+            Route::resource('users', UserController::class);
+        });
+    });
+});
 Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
     Route::get('/category', [NewsController::class, 'index'])
         ->name('index');;
@@ -44,12 +51,10 @@ Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
 });
 
 
-Route::get('/', [WelcomeController::class, 'index'])
-        ->name('welcome');
 
-Route::get('/about', [AboutUsController::class, 'index'])
-    ->name('about');
 
 Route::get('/example/{category}', fn(Category $category) => $category);
 
 
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

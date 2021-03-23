@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsCreateRequest;
+use App\Http\Requests\NewsEditRequest;
 use App\Models\News;
 use Illuminate\Http\Request;
 
