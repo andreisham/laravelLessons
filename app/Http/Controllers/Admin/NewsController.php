@@ -49,9 +49,9 @@ class NewsController extends Controller
         $create = News::create($data);
         if ($create) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость добавлена');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось добавить новость');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
@@ -90,9 +90,9 @@ class NewsController extends Controller
         $save = $news->fill($data)->save();
         if ($save) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость обновлена');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось обновить новость');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**

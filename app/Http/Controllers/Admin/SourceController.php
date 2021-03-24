@@ -48,9 +48,9 @@ class SourceController extends Controller
         $create = Source::create($data);
         if ($create) {
             return redirect()->route('admin.sources.index')
-                ->with('success', 'Источник добавлен');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось добавить источник');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
@@ -89,9 +89,9 @@ class SourceController extends Controller
         $save = $source->fill($data)->save();
         if ($save) {
             return redirect()->route('admin.sources.index')
-                ->with('success', 'Источник обновлен');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось обновить источник');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
