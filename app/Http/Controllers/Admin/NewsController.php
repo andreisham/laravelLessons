@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsCreateRequest;
 use App\Http\Requests\NewsEditRequest;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,8 @@ class NewsController extends Controller
      */
     public function create(News $news)
     {
-        return view('admin.news.create', ['news' => $news]);
+        $categories = Category::all();
+        return view('admin.news.create', ['news' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -44,10 +46,19 @@ class NewsController extends Controller
      */
     public function store(NewsCreateRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->only('title', 'description', 'status');
+        $category_id = $request->input('category_id');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $ext = $image->getClientOriginalExtension();
+            $fileName = uniqid() . "." . $ext;
+            $data['image'] = $image->storeAs('/news', $fileName, 'public');
+        }
+        $category = Category::findOrFail($category_id);
+        $news = new News($data);
+        $status = $category->news()->save($news);
 
-        $create = News::create($data);
-        if ($create) {
+        if ($status) {
             return redirect()->route('admin.news.index')
                 ->with('success', trans('messages.admin.success'));
         }

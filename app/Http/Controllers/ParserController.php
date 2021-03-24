@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
-use App\Services\ParserService;
+use App\Jobs\JobNewsParsing;
+
 
 class ParserController extends Controller
 {
-    public function __invoke(ParserService $service) {
-        $data = $service->start('https://news.yandex.ru/music.rss');
-        $this->store($data['news']);
+    public function __invoke() {
+        $parsingLinks = [
+            'https://news.yandex.ru/army.rss',
+            'https://news.yandex.ru/music.rss',
+            'https://news.yandex.ru/auto.rss',
+            'https://news.yandex.ru/communal.rss',
+            'https://news.yandex.ru/health.rss',
+            'https://news.yandex.ru/games.rss',
+            'https://news.yandex.ru/internet.rss',
+            'https://news.yandex.ru/cyber_sport.rss',
+            'https://news.yandex.ru/movies.rss',
+            'https://news.yandex.ru/cosmos.rss',
+            'https://news.yandex.ru/culture.rss',
+            'https://news.yandex.ru/championsleague.rss',
+        ];
+        foreach ($parsingLinks as $link) {
+            JobNewsParsing::dispatch($link);
+        }
+
+        echo 'Задачи добавлены в очередь';
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param $data array
-     */
-    public function store($data)
-    {
-        foreach ($data as $news) {
-            $title = $news['title'];
-            $newsAlreadyHas = News::where('title', $title)->first();
-            if (!$newsAlreadyHas){
-                News::create($news);
-            }
-            continue;
-        }
-    }
+
+
+
 }

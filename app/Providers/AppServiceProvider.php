@@ -24,9 +24,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FakeNewsService::class, function() {
             return new FakeNewsService();
         });
-        $this->app->bind(ParserService::class, function () {
-            return new ParserService();
-        });
+        //$this->app->bind(ParserService::class, function () {
+          //  return new ParserService();
+        //});
         $this->app->bind(SocialService::class, function () {
             return new SocialService();
         });

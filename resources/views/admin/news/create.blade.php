@@ -10,12 +10,15 @@
 
         <!-- Content Row -->
         <div>
-            <form action="{{ route('admin.news.store') }}" method="POST">
+            <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="category_id">Выбор категории</label>
                     <select class="form-control" name="category_id" id="category_id">
                         <option>Выбрать</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->title }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
@@ -55,9 +58,9 @@
                     <label for="status">Статус новости</label>
 {{--                    не добавляется статус в БД  --}}
                     <select class="form-control" name="status" id="status">
-                        <option>draft</option>
-                        <option>published</option>
-                        <option>blocked</option>
+                        <option value="draft">draft</option>
+                        <option value="published">published</option>
+                        <option value="blocked">blocked</option>
                     </select>
                 </div>
                 <button class="btn btn-success" type="submit">Сохранить</button>

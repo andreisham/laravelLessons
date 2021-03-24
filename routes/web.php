@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\SourceController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ParserController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\WelcomeController;
 use App\Models\Category;
@@ -61,7 +62,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/parse/news', \App\Http\Controllers\ParserController::class);
+Route::get('/parse/news', ParserController::class);
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/auth/vk/init', [SocialiteController::class, 'init'])->name('vk.init');

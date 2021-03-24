@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
-                    <textarea class="form-control"  name="description"></textarea>
+                    <textarea class="form-control"  name="description" id="description"></textarea>
                     @if($errors->has('description'))
                         <div class="alert alert-danger">
                             @foreach($errors->get('description') as $error)
@@ -37,7 +37,19 @@
                 <button class="btn btn-success" type="submit">Сохранить</button>
             </form>
         </div>
+
+
+
     </div>
 
 
 @endsection
+@push('js')
+    <script type="text/javascript">
+            ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+            console.error( error );
+        } );
+    </script>
+@endpush

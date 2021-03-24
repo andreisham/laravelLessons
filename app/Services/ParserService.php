@@ -6,16 +6,16 @@ use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ParserService
 {
-    protected array $parsingLinks = [
-        'https://news.yandex.ru/army.rss',
-        'https://news.yandex.ru/music.rss',
-        'https://news.yandex.ru/auto.rss',
-    ];
 
-    public function start(string $url):array {
-        $xml = XmlParser::load($url);
+    protected string $url;
+    public function __construct(string $url) {
+        $this->url = $url;
+    }
 
-        return $xml->parse([
+    public function start():array {
+        $xml = XmlParser::load($this->url);
+
+        $data = $xml->parse([
             'title' => [
                 'uses' => 'channel.title'
             ],
@@ -32,5 +32,6 @@ class ParserService
                 'uses' => 'channel.item[title,link,guid,description,pubDate]'
             ]
         ]);
+        return $data;
     }
 }
