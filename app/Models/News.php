@@ -19,7 +19,6 @@ class News extends Model
         'image',
         'status',
     ];
-    protected $guarded = ['id'];
 
     public function categories(): BelongsToMany
     {
