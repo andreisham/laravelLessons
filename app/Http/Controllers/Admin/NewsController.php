@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsCreateRequest;
 use App\Http\Requests\NewsEditRequest;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,8 @@ class NewsController extends Controller
      */
     public function create(News $news)
     {
-        return view('admin.news.create', ['news' => $news]);
+        $categories = Category::all();
+        return view('admin.news.create', ['news' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -44,14 +46,23 @@ class NewsController extends Controller
      */
     public function store(NewsCreateRequest $request)
     {
-        $data = $request->validated();
-
-        $create = News::create($data);
-        if ($create) {
-            return redirect()->route('admin.news.index')
-                ->with('success', 'Новость добавлена');
+        $data = $request->only('title', 'description', 'status');
+        $category_id = $request->input('category_id');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $ext = $image->getClientOriginalExtension();
+            $fileName = uniqid() . "." . $ext;
+            $data['image'] = $image->storeAs('/news', $fileName, 'public');
         }
-        return back()->withInput()->with('errors', 'Не удалось добавить новость');
+        $category = Category::findOrFail($category_id);
+        $news = new News($data);
+        $status = $category->news()->save($news);
+
+        if ($status) {
+            return redirect()->route('admin.news.index')
+                ->with('success', trans('messages.admin.success'));
+        }
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
@@ -90,9 +101,9 @@ class NewsController extends Controller
         $save = $news->fill($data)->save();
         if ($save) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость обновлена');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось обновить новость');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
