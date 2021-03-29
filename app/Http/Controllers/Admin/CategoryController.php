@@ -54,9 +54,9 @@ class CategoryController extends Controller
         $create = Category::create($data);
         if ($create) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись добавлена');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось добавить запись');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
@@ -96,9 +96,9 @@ class CategoryController extends Controller
         $save = $category->fill($data)->save();
         if ($save) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись обновлена');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось обновить запись');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**

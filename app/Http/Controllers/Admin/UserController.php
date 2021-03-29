@@ -81,9 +81,9 @@ class UserController extends Controller
         $save = $user->fill($data)->save();
         if ($save) {
             return redirect()->route('admin.users.index')
-                ->with('success', 'Пользователь обновлен');
+                ->with('success', trans('messages.admin.success'));
         }
-        return back()->withInput()->with('errors', 'Не удалось обновить пользователя');
+        return back()->withInput()->with('errors', trans('messages.admin.fail'));
     }
 
     /**
